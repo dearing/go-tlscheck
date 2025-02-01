@@ -2,6 +2,9 @@
 
 quick and dirty TLS cert information
 
+> [!WARNING]
+> uses the system time and cert bundles
+
 ```shell
 go install github.com/dearing/go-tlscheck@latest
 ```
