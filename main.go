@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var version = "1.1.0"
+var version = "1.1.1"
 
 var argUrl = flag.String("url", "https://www.google.com", "URL to connect to")
 var argJson = flag.Bool("json", false, "Print output as JSON")
@@ -21,7 +21,7 @@ func main() {
 	flag.Parse()
 
 	if *argVersion {
-		fmt.Printf("go-tlscheck version %s\n", version)
+		fmt.Printf("github.com/dearing/go-tlscheck v%s\n", version)
 		return
 	}
 
@@ -33,12 +33,12 @@ func main() {
 	}
 	defer req.Body.Close()
 
-	fmt.Printf("GET %s took %s\n", *argUrl, time.Since(startTime))
-
 	if *argJson {
 		jsonPrint(req.TLS)
 		return
 	}
+
+	fmt.Printf("GET %s took %s\n", *argUrl, time.Since(startTime))
 
 	subject := req.TLS.PeerCertificates[0].Subject
 
