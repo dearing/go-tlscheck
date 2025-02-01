@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var version = "1.1.1"
+var version = "1.1.2"
 
 var argUrl = flag.String("url", "https://www.google.com", "URL to connect to")
 var argJson = flag.Bool("json", false, "Print output as JSON")
