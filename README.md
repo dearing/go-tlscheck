@@ -2,8 +2,12 @@
 
 quick and dirt TLS cert information
 
+```shell
+go install github.com/dearing/go-tlscheck@latest
 ```
-$ go-tlscheck -h
+---
+```shell
+go-tlscheck -h
 Usage of ./go-tlscheck:
   -json
         Print output as JSON
@@ -11,8 +15,10 @@ Usage of ./go-tlscheck:
         URL to connect to (default "https://www.google.com")
   -version
         Print version
-
-$ go-tlscheck -url https://github.com
+```
+---
+```
+go-tlscheck -url https://github.com
 CommonName:    github.com
 DNSNames:      [github.com www.github.com]
 IssuerOrg:     [Sectigo Limited]
