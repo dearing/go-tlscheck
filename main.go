@@ -55,8 +55,7 @@ func main() {
 
 	fmt.Printf("NotBefore:     %s\n", req.TLS.PeerCertificates[0].NotBefore)
 	fmt.Printf("NotAfter:      %s\n", req.TLS.PeerCertificates[0].NotAfter)
-
-	// get the expiration date of the certificate
+	
 	expiresIn := req.TLS.PeerCertificates[0].NotAfter.Sub(time.Now())
 	fmt.Printf("ExpiresIn:     %s\n", expiresIn)
 }
