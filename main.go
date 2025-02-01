@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var version = "1.0.0"
+var version = "1.1.0"
 
 var argUrl = flag.String("url", "https://www.google.com", "URL to connect to")
 var argJson = flag.Bool("json", false, "Print output as JSON")
@@ -25,11 +25,15 @@ func main() {
 		return
 	}
 
+	startTime := time.Now()
+
 	req, err := http.Get(*argUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer req.Body.Close()
+
+	fmt.Printf("GET %s took %s\n", *argUrl, time.Since(startTime))
 
 	if *argJson {
 		jsonPrint(req.TLS)
