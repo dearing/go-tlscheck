@@ -21,7 +21,7 @@ func main() {
 	flag.Parse()
 
 	if *argVersion {
-		fmt.Printf("go-sshcheck version %s\n", version)
+		fmt.Printf("go-tlscheck version %s\n", version)
 		return
 	}
 
