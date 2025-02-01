@@ -8,7 +8,7 @@ go install github.com/dearing/go-tlscheck@latest
 ---
 ```shell
 go-tlscheck -h
-Usage of ./go-tlscheck:
+Usage of go-tlscheck:
   -json
         Print output as JSON
   -url string
