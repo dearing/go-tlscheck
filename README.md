@@ -1,6 +1,6 @@
 # go-tlscheck
 
-quick and dirt TLS cert information
+quick and dirty TLS cert information
 
 ```shell
 go install github.com/dearing/go-tlscheck@latest
