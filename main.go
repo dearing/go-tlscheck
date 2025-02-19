@@ -6,28 +6,61 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"log/slog"
 	"net/http"
+	"os"
+	"runtime/debug"
 	"time"
 )
 
-var version = "1.1.2"
+var version = "1.1.3"
 
 var argUrl = flag.String("url", "https://www.google.com", "URL to connect to")
-var argJson = flag.Bool("json", false, "Print output as JSON")
-var argVersion = flag.Bool("version", false, "Print version")
+var argTimeout = flag.Int("timeout", 300, "timeout in seconds")
+var argJson = flag.Bool("json", false, "write to STDOUT certificate information JSON")
+var argVersion = flag.Bool("version", false, "output version and return")
+
+func usage() {
+	println(`Usage: go-tlscheck [options]
+This tool was created because the author often needs to trigger/verify TLS certificates in a homelab environment.
+
+Quick query a URL and return just some useful bits of the TLS certificate information.
+  ex: go-tlscheck -url https://www.google.com
+
+Quick query a URL and print the all the TLS certificate information in JSON format then pipe to jq for just serials.
+  ex: go-tlscheck -url https://www.google.com -json | jq '.PeerCertificates[].SerialNumber'
+
+Options:
+`)
+	flag.PrintDefaults()
+}
 
 func main() {
 
+	flag.Usage = usage
 	flag.Parse()
 
 	if *argVersion {
+		println("go-tlscheck v" + version)
+		info, ok := debug.ReadBuildInfo()
+		if ok {
+			slog.Info("build info", "main", info.Main.Path, "version", info.Main.Version)
+			for _, setting := range info.Settings {
+				slog.Info("build info", "key", setting.Key, "value", setting.Value)
+			}
+		}
+
 		fmt.Printf("github.com/dearing/go-tlscheck v%s\n", version)
 		return
 	}
 
 	startTime := time.Now()
 
-	req, err := http.Get(*argUrl)
+	httpClient := &http.Client{
+		Timeout: time.Duration(*argTimeout) * time.Second,
+	}
+
+	req, err := httpClient.Get(*argUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -38,7 +71,13 @@ func main() {
 		return
 	}
 
-	fmt.Printf("GET %s took %s\n", *argUrl, time.Since(startTime))
+	slog.Info("GET", "url", *argUrl, "duration", time.Since(startTime))
+
+	if err != nil {
+		slog.Error("GET", "url", *argUrl, "error", err)
+		os.Exit(1)
+	}
+	defer req.Body.Close()
 
 	subject := req.TLS.PeerCertificates[0].Subject
 
@@ -55,8 +94,8 @@ func main() {
 
 	fmt.Printf("NotBefore:     %s\n", req.TLS.PeerCertificates[0].NotBefore)
 	fmt.Printf("NotAfter:      %s\n", req.TLS.PeerCertificates[0].NotAfter)
-	
-	expiresIn := req.TLS.PeerCertificates[0].NotAfter.Sub(time.Now())
+
+	expiresIn := time.Until(req.TLS.PeerCertificates[0].NotAfter)
 	fmt.Printf("ExpiresIn:     %s\n", expiresIn)
 }
 
