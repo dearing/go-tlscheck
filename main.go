@@ -22,13 +22,11 @@ var argVersion = flag.Bool("version", false, "output version and return")
 
 func usage() {
 	println(`Usage: go-tlscheck [options]
-This tool was created because the author often needs to trigger/verify TLS certificates in a homelab environment.
+Quickly check the TLS certificate of a website and display useful information
+or enable JSON output to get all the information in from the Go handler.
 
-Quick query a URL and return just some useful bits of the TLS certificate information.
-  ex: go-tlscheck -url https://www.google.com
-
-Quick query a URL and print the all the TLS certificate information in JSON format then pipe to jq for just serials.
-  ex: go-tlscheck -url https://www.google.com -json | jq '.PeerCertificates[].SerialNumber'
+- ex: go-tlscheck -url https://www.google.com
+- ex: go-tlscheck -url https://www.google.com -json | jq '.PeerCertificates[].SerialNumber'
 
 Options:
 `)
