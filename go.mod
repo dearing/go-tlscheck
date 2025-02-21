@@ -5,7 +5,6 @@ go 1.24.0
 tool (
 	github.com/dearing/go-cross-compile
 	github.com/dearing/go-github-release
-	github.com/dearing/go-tlscheck
 )
 
 require (
