@@ -1,11 +1,7 @@
 module github.com/dearing/go-tlscheck
 
-go 1.23.5
+go 1.24.0
 
-tool github.com/dearing/go-github-releaser
+tool github.com/dearing/go-cross-compile
 
-require (
-	github.com/dearing/go-github-releaser v1.0.1 // indirect
-	github.com/google/go-github/v69 v69.2.0 // indirect
-	github.com/google/go-querystring v1.1.0 // indirect
-)
+require github.com/dearing/go-cross-compile v1.0.8 // indirect
